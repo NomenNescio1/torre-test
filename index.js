@@ -13,3 +13,8 @@ axios.get('https://bio.torre.co/api/people/danielrodriguez/connections')
     .finally(function() {
         // always executed
     });
+
+    //GET user connections based on input
+    //GET user bio based on input
+    //GET connections bio based on previous GET
+    //match user interests with connections strengths
