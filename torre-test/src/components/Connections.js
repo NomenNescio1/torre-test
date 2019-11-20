@@ -12,25 +12,40 @@ class Connections extends React.Component {
     }
     
     getConnections = (e) =>{
+        //using a middleware to test endpoints without CORS blocking
         let apiBaseEndpoint = `https://cors-anywhere.herokuapp.com/bio.torre.co/api/`;
         e.preventDefault();
-        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections`)
+        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=5`)
     .then(response => {
+        this.usernameRef.current.value = '';
         // handle success
-        //console.log(response.data[0].person.publicId);        
+        //map connections publicId
         let res = response.data.map((item) => {
             return item.person.publicId;
         });
-
-        this.usernameRef.current.value = '';
-        this.setState ({
-            error: null,
-            connections: res
-        })
+        //map connections publicIds into a GETable axios endpoint
         let urlBio = res.map((item)=>{
-            return `${apiBaseEndpoint}bios/` + item
+            return axios.get(`${apiBaseEndpoint}bios/` + item)
         });
-        console.log(urlBio);
+        //GET user connection's bios
+        axios.all([...urlBio]).then(axios.spread((...responses) => {
+            // use/access the results 
+            console.log(responses);
+            let actualConnections = responses.map((item)=>{
+                return item.data.person;
+            })
+            this.setState ({
+                error: null,
+                connections: actualConnections
+            })
+                        
+          })).catch(errors => {
+            this.setState({
+                error: errors.isAxiosError
+            })
+            // react on errors.
+            console.log(errors);
+          })
     })
     .catch(error => {
         // handle error
@@ -53,7 +68,7 @@ render (){
         </form>
         <h6>You can find your username here</h6>
         <div className="connections-container">
-            <p>{this.state.error ? 'User not found. Try again?' : ''}</p>
+            {this.state.error ? <p>User not found. Try again?</p>: null}
         </div>
     </div>
     }
