@@ -1,0 +1,16 @@
+began wondering if react + axios was a good fit (let's hope it was)
+tested endpoints via browser
+wondered if there was a way to match users that shared university
+scraped that due to very few users having university on their profiles
+settled down on matching interests with connections strengths
+began testing the endpoints with axios
+create react app to consume the endpoints
+created the basic front end with the username input field
+began testing on console log several ways to fetch the data from the endpoints and understanding the response
+working on mapping the endpoints response to have only users connection's ID
+then started to think on how to GET the users connections bio
+got the bio of the users connections 
+made a single object containing connections info and top strength
+began working on error management, like when connections don't have strengths on the profile
+also considered a case where the user doesn't have interests
+will make a switch to act on axios errors
