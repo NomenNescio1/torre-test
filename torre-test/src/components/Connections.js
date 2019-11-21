@@ -17,40 +17,43 @@ class Connections extends React.Component {
         //using a middleware to test endpoints without CORS blocking
         let apiBaseEndpoint = `https://cors-anywhere.herokuapp.com/bio.torre.co/api/`;
         e.preventDefault();
+
         axios.get(`${apiBaseEndpoint}bios/${this.usernameRef.current.value}`).then(response =>{
-            this.setState ({
-                topInterest: response.data.interests[0].name
-            })
-        })
-        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=5`)
-    .then(response => {
+            response.data.interests.length === 0 ? this.setState ({error: 'no-interest'}) : this.setState ({topInterest: response.data.interests[0].name})
+        });
+        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=5`).then(response => {
         this.usernameRef.current.value = '';
         // handle success
         //map connections publicId
         let res = response.data.map((item) => {
-            return item.person.publicId;
+            return axios.get(`${apiBaseEndpoint}bios/` + item.person.publicId);
         });
         //map connections publicIds into a GETable axios endpoint
-        let urlBio = res.map((item)=>{
-            return axios.get(`${apiBaseEndpoint}bios/` + item)
-        });
+        // let urlBio = res.map((item)=>{
+        //     return axios.get(`${apiBaseEndpoint}bios/` + item)
+        // });
         //GET user connection's bios
-        axios.all([...urlBio]).then(axios.spread((...responses) => {
+        axios.all([...res]).then(axios.spread((...responses) => {
             // use/access the results 
             let connectionsStrengths = responses.map((item)=>{
                 return item.data.strengths;
             })
-            let el = connectionsStrengths.map((item, index) =>{
-                return item[index].name;
+            console.log(connectionsStrengths)
+            let strengthsName = connectionsStrengths.map((item) =>{
+                if(item){
+                    return [item[0].name, item[1].name, item[2].name];    
+                }else{
+                    return undefined;
+                }
             })
-            console.log(el);
+
+            console.log(strengthsName);
             let connectionsPerson = responses.map((item)=>{
                 return item.data.person;
             })
             connectionsPerson.forEach( (item, index) =>{
-                item.strengths = el[index];
-            })            
-
+                item.strength = strengthsName[index];
+            })
             this.setState ({
                 error: null,
                 connections: connectionsPerson
@@ -58,20 +61,19 @@ class Connections extends React.Component {
                         
           })).catch(errors => {
             this.setState({
-                error: errors
+                error: 'not-connected'
             })
             // react on errors.
             console.log(errors);
           })
-    })
-    .catch(error => {
+    }).catch(error => {
         // handle error
         this.usernameRef.current.value = '';
         this.setState({
-            error: error
+            error: 'not-found'
+            })
+            console.log(error);
         })
-        console.log(error);
-    })
     }
 
 render (){
@@ -87,7 +89,7 @@ render (){
         <div className="connections-container">
             {this.state.error ? <p>User not found. Try again?</p>: null}
             {this.state.topInterest ? <p>Your top interest is: {this.state.topInterest} </p> : null}
-            {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strengths={item.strengths} interest={this.state.topInterest}></Items>)}
+            {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strength={item.strength}></Items>)}
         </div>
     </div>)
     }

@@ -5,7 +5,7 @@ class Items extends React.Component {
     // }
     render (){    
         return(
-        <div>hola {this.props.name}, strength {this.props.strengths}</div>
+        <div>hola {this.props.name}, strength {this.props.strength.map(item=>{return<p>{item}</p>})}</div>
         )
     }
 }
