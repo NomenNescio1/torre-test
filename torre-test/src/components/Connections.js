@@ -20,7 +20,12 @@ class Connections extends React.Component {
         //test
 
         axios.get(`${apiBaseEndpoint}bios/${this.usernameRef.current.value}`).then(response =>{
-            response.data.interests.length === 0 ? this.setState ({error: 'no-interest'}) : this.setState ({topInterest: response.data.interests[0].name})
+            let interestsName = response.data.interests.map((item)=>{
+                return item.name
+            })
+            console.log(interestsName)
+
+            response.data.interests.length === 0 ? this.setState ({error: 'no-interest'}) : this.setState ({topInterest: interestsName})
         });
         axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=5`).then(response => {
         this.usernameRef.current.value = '';
@@ -39,16 +44,11 @@ class Connections extends React.Component {
             let connectionsStrengths = responses.map((item)=>{
                 return item.data.strengths;
             })
-            console.log(connectionsStrengths)
             let strengthsName = connectionsStrengths.map((item) =>{
-                if(item){
-                    return [item[0].name, item[1].name, item[2].name];    
-                }else{
-                    return undefined;
-                }
+                return item.map((foo)=>{
+                    return foo.name
+                })
             })
-
-            console.log(strengthsName);
             let connectionsPerson = responses.map((item)=>{
                 return item.data.person;
             })
@@ -76,6 +76,20 @@ class Connections extends React.Component {
             console.log(error);
         })
     }
+    handleErrors = (error) =>{
+        switch (error) {
+            case "not-found":
+                return <p>User not found. Try again?</p>
+            case "not-connected":
+                return <p>You don't have connections on your Torre profile.</p>
+            case "no-interest":
+                return <p>You don't have any interests set on your Torre profile.</p>
+        
+            default:
+                break;
+        }
+
+    }
 
 render (){
     return (<div className="content">
@@ -88,8 +102,8 @@ render (){
         </form>
         <h6>You can find your username here</h6>
         <div className="connections-container">
-            {this.state.error ? <p>User not found. Try again?</p>: null}
-            {this.state.topInterest ? <p>Your top interest is: {this.state.topInterest} </p> : null}
+            {this.handleErrors(this.state.error)}
+            {this.state.topInterest ? <p>Your top interests are: {this.state.topInterest.join(', ')} </p> : null}
             {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strength={item.strength}></Items>)}
         </div>
     </div>)
