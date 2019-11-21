@@ -1,4 +1,4 @@
-began wondering if react + axios was a good fit (let's hope it was)
+|began wondering if react + axios was a good fit (let's hope it was)
 tested endpoints via browser
 wondered if there was a way to match users that shared university
 scraped that due to very few users having university on their profiles
@@ -14,3 +14,4 @@ made a single object containing connections info and top strength
 began working on error management, like when connections don't have strengths on the profile
 also considered a case where the user doesn't have interests
 will make a switch to act on axios errors
+managed to handle errors and fixed interests mapping issue, now working on improving visuals and deployment
