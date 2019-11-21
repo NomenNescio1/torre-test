@@ -17,6 +17,7 @@ class Connections extends React.Component {
         //using a middleware to test endpoints without CORS blocking
         let apiBaseEndpoint = `https://cors-anywhere.herokuapp.com/bio.torre.co/api/`;
         e.preventDefault();
+        //test
 
         axios.get(`${apiBaseEndpoint}bios/${this.usernameRef.current.value}`).then(response =>{
             response.data.interests.length === 0 ? this.setState ({error: 'no-interest'}) : this.setState ({topInterest: response.data.interests[0].name})
