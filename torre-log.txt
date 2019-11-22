@@ -18,3 +18,5 @@ managed to handle errors and fixed interests mapping issue, now working on impro
 fixed git inconsistency
 started to work on the styles and the deployment
 thinking if there's a way to highlight matching interests with strengths
+finishing styles and deployed on a new repo, kept adding details
+made so the input is align-center-ed once the app loads and initial when the form is submited

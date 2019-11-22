@@ -9,7 +9,9 @@ class Connections extends React.Component {
         this.state  ={
           connections: [],
           error: '', 
-          topInterest : ''
+          topInterest : '',
+          userName: '',
+          changeAlign: false
         }
     }
     
@@ -17,17 +19,19 @@ class Connections extends React.Component {
         //using a middleware to test endpoints without CORS blocking
         let apiBaseEndpoint = `https://cors-anywhere.herokuapp.com/bio.torre.co/api/`;
         e.preventDefault();
-        //test
-
         axios.get(`${apiBaseEndpoint}bios/${this.usernameRef.current.value}`).then(response =>{
-            let interestsName = response.data.interests.map((item)=>{
+            let userResponse = response.data;
+            let interestsName = userResponse.interests.map((item)=>{
                 return item.name
             })
-            console.log(interestsName)
-
-            response.data.interests.length === 0 ? this.setState ({error: 'no-interest'}) : this.setState ({topInterest: interestsName})
+            response.data.interests.length === 0 ? 
+            this.setState ({
+                error: 'no-interest',
+                topInterest: '',
+                connections: []
+            }) : this.setState ({topInterest: interestsName});
         });
-        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=5`).then(response => {
+        axios.get(`${apiBaseEndpoint}people/${this.usernameRef.current.value}/connections?limit=6`).then(response => {
         this.usernameRef.current.value = '';
         // handle success
         //map connections publicId
@@ -57,12 +61,15 @@ class Connections extends React.Component {
             })
             this.setState ({
                 error: null,
-                connections: connectionsPerson
+                connections: connectionsPerson,
+                changeAlign: true
             })
                         
           })).catch(errors => {
             this.setState({
-                error: 'not-connected'
+                error: 'not-connected',
+                topInterest: '',
+                connections: []
             })
             // react on errors.
             console.log(errors);
@@ -71,10 +78,16 @@ class Connections extends React.Component {
         // handle error
         this.usernameRef.current.value = '';
         this.setState({
-            error: 'not-found'
+            error: 'not-found',
+            topInterest: '',
+            connections: []
             })
             console.log(error);
         })
+    }
+    matchInterests = (interests, strengths) =>{
+        let matched = interests.includes(strengths[0])
+        console.log(matched)
     }
     handleErrors = (error) =>{
         switch (error) {
@@ -83,27 +96,28 @@ class Connections extends React.Component {
             case "not-connected":
                 return <p>You don't have connections on your Torre profile.</p>
             case "no-interest":
-                return <p>You don't have any interests set on your Torre profile.</p>
-        
+                return <p>You don't have any interests set on your Torre profile.</p>        
             default:
                 break;
         }
-
     }
 
 render (){
-    return (<div className="content">
-        <h1>Match your interests with your Torre connections strengths.</h1>
-        <br/>
-        <form onSubmit={this.getConnections}>
-            <input className="user-input" placeholder="Input your username to get started" ref={this.usernameRef} type="text" name="username" id=""/> 
-            <input type="submit" value="GO"/>
-        </form>
-        <h6>You can find your username here</h6>
-        {this.handleErrors(this.state.error)}
-            {this.state.topInterest ? <p>Your top interests are: {this.state.topInterest.join(', ')} </p> : null}
-        <div className="connection-container">            
-            {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strength={item.strength}></Items>)}
+    return (
+    <div className={`content-wrapper ${this.state.changeAlign ? "dont-center-app": 'center-app'}`}>
+        <div className="content">
+            <h1>Match your interests with your Torre connections strengths.</h1>
+            <br/>
+            <form onSubmit={this.getConnections}>
+                <input className="user-input" placeholder="Input your username to get started" ref={this.usernameRef} type="text" name="username" id=""/> 
+                <input type="submit" value="GO"/>
+            </form>
+            <h6>You can find your username like this: bio.torre.co/username</h6>
+            {this.handleErrors(this.state.error)}
+            {this.state.topInterest ? <h3>Your top interests are: {this.state.topInterest.join(', ')} </h3> : ''}
+            <div className="connection-container">            
+                {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strength={item.strength}></Items>)}
+            </div>
         </div>
     </div>)
     }

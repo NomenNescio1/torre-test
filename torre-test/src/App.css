@@ -6,9 +6,24 @@ body{
   text-align: center;
   font-family: 'Muli', sans-serif;
   color: white;
-  background-color: #00ACC1;
+  background-color: #00ACC1;  
 }
-
+.content-wrapper{
+  display: flex;
+  width: 100vw;
+  height: 100vh;  
+  justify-content: center;
+  max-width: 100%;
+  transition: align-items 2s;
+}
+.center-app{
+  align-items: center;
+  transition: align-items 2s;
+}
+.dont-center-app{
+  align-items: initial;
+  transition: align-items 2s;
+}
 .App-logo {
   height: 40vmin;
 }
@@ -74,4 +89,15 @@ img.connection-image {
   width: 200px;
   border-radius: 100px;
   box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
+}
+@media all and (max-width: 970px){
+  .connection-container{
+    grid-template-columns: repeat(2, 50%);
+  }
+
+}
+@media all and (max-width: 550px){
+  .connection-container{
+    grid-template-columns: repeat(1, auto);
+  }
 }
