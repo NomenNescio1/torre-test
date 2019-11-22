@@ -1,5 +1,12 @@
+/*general app styles*/
+body{
+  background-color: #00acc1;
+}
 .App {
   text-align: center;
+  font-family: 'Muli', sans-serif;
+  color: white;
+  background-color: #00ACC1;
 }
 
 .App-logo {
@@ -16,7 +23,55 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 .App-link {
   color: #09d3ac;
+}
+/*inputs*/
+.user-input {
+  border: none;
+  border-bottom: none;
+  margin-right: 2px;
+  width: 300px;
+  height: 30px;
+}
+input[type="submit"] {
+  height: 32px;
+  -webkit-appearance: none;
+  border: none;
+  background-color: white;
+  color: #00acc1;
+  font-weight: bold;
+}
+input.user-input:focus {
+  outline: 2px auto #00ACC1;
+}
+/*cards*/
+.connection-container {
+  display: grid;
+  grid-template-columns: repeat(3, 30%);
+  grid-template-rows: repeat(5, auto);
+  grid-gap: 20px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+}
+h2.connection-name{
+  color:#00acc1;
+}
+a.connection-link{
+  text-decoration: none;
+}
+.connection-card {
+  color: black;
+  background-color: #F7F7F7;
+  width: 70%;
+  height: auto;
+  padding: 20px;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.2);
+}
+img.connection-image {
+  width: 200px;
+  border-radius: 100px;
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
 }

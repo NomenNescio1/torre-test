@@ -95,15 +95,14 @@ render (){
     return (<div className="content">
         <h1>Match your interests with your Torre connections strengths.</h1>
         <br/>
-        <h4>Input your username to get started</h4>
         <form onSubmit={this.getConnections}>
-            <input ref={this.usernameRef} type="text" name="username" id=""/> 
-            <input type="submit" value="Go"/>
+            <input className="user-input" placeholder="Input your username to get started" ref={this.usernameRef} type="text" name="username" id=""/> 
+            <input type="submit" value="GO"/>
         </form>
         <h6>You can find your username here</h6>
-        <div className="connections-container">
-            {this.handleErrors(this.state.error)}
+        {this.handleErrors(this.state.error)}
             {this.state.topInterest ? <p>Your top interests are: {this.state.topInterest.join(', ')} </p> : null}
+        <div className="connection-container">            
             {this.state.connections.map(item => <Items key={item.publicId} id={item.publicId} title={item.professionalHeadline} name={item.name} picture={item.picture} strength={item.strength}></Items>)}
         </div>
     </div>)

@@ -16,3 +16,5 @@ also considered a case where the user doesn't have interests
 will make a switch to act on axios errors
 managed to handle errors and fixed interests mapping issue, now working on improving visuals and deployment
 fixed git inconsistency
+started to work on the styles and the deployment
+thinking if there's a way to highlight matching interests with strengths

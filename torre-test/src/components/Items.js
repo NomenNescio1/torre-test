@@ -5,11 +5,11 @@ class Items extends React.Component {
     // }
     render (){    
         return(
-        <div className="card-connection">
-            <img src={this.props.picture ? this.props.picture : 'placeholder'} alt={this.props.name}/>
-            <a href={`https://bio.torre.co/${this.props.id}`} target="_blank" rel="noopener noreferrer"><h2 className="connection-name">{this.props.name}</h2></a>
-            <h3 className="connection-name">{this.props.title}</h3>
-            {this.props.strength ?<p>{this.props.strength.join(', ')}</p> : null}
+        <div className="connection-card">
+            <img className="connection-image" src={this.props.picture ? this.props.picture : 'placeholder'} alt={this.props.name}/>
+            <a className="connection-link" href={`https://bio.torre.co/${this.props.id}`} target="_blank" rel="noopener noreferrer"><h2 className="connection-name">{this.props.name}</h2></a>
+            <h3 className="connection-title">{this.props.title}</h3>
+            {this.props.strength ?<p className="connection-strengths"><b>Top Strengths: </b>{this.props.strength.slice(1, 5).join(', ')}</p> : <p>N/A</p>}
         </div>
         )
     }
