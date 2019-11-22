@@ -17,7 +17,7 @@ class Connections extends React.Component {
     
     getConnections = (e) =>{
         //using a middleware to test endpoints without CORS blocking
-        let apiBaseEndpoint = `https://cors-anywhere.herokuapp.com/bio.torre.co/api/`;
+        let apiBaseEndpoint = `https://lucky-smoke-8bb3.cors-bypass.workers.dev/?https://bio.torre.co/api/`;
         e.preventDefault();
         axios.get(`${apiBaseEndpoint}bios/${this.usernameRef.current.value}`).then(response =>{
             let userResponse = response.data;
