@@ -113,6 +113,7 @@ render (){
                 <input type="submit" value="GO"/>
             </form>
             <h6>You can find your username like this: bio.torre.co/username</h6>
+            <p>This project was built to apply to a position at Torre. The app recieves an username of the Torre platform, fetches the user's interests and lists the strengths of the user's connections. It works best if it belongs to a well connected user. You can use these usernames for testing purposes: ac, torrenegra, manolo, danielaavila, lauragonzalez, danielvergara.</p>
             {this.handleErrors(this.state.error)}
             {this.state.topInterest ? <h3>Your top interests are: {this.state.topInterest.join(', ')} </h3> : ''}
             <div className="connection-container">            
